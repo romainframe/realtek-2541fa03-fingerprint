@@ -1,0 +1,56 @@
+# Build artifacts
+*.o
+*.so
+*.a
+*.lo
+*.la
+tools/probe
+tools/*.o
+
+# Compiler outputs
+*.out
+*.exe
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build directories
+build/
+builddir/
+.libs/
+.deps/
+
+# USB captures (too large for git)
+captures/*.pcap
+captures/*.pcapng
+
+# But keep the directory and README
+!captures/README.md
+
+# Backup files
+*.bak
+*.orig
+*.rej
+
+# Personal notes (keep structured docs in docs/)
+notes.txt
+scratch.md
+TODO.local
+
+# Test outputs
+test_output/
+*.log
+
+# Package files
+*.pkg.tar.zst
+*.deb
+*.rpm
+
+# Temporary files
+tmp/
+.tmp/

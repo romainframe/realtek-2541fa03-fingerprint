@@ -1,0 +1,80 @@
+# Useful Wireshark Filters for USB Fingerprint Analysis
+
+## Basic Device Filtering
+
+# Filter by USB bus and device address (adjust numbers as needed)
+usb.bus_id == 1 && usb.device_address == 2
+
+# Filter by Vendor/Product ID
+usb.idVendor == 0x2541 && usb.idProduct == 0xfa03
+
+## Endpoint Filtering
+
+# Show only bulk transfers
+usb.transfer_type == 0x03
+
+# Show only interrupt transfers
+usb.transfer_type == 0x01
+
+# Show endpoint 0x01 (OUT)
+usb.endpoint_address == 0x01
+
+# Show endpoint 0x82 (IN)
+usb.endpoint_address == 0x82
+
+# Show endpoint 0x83 (IN interrupt)
+usb.endpoint_address == 0x83
+
+# Show endpoint 0x84 (IN interrupt)
+usb.endpoint_address == 0x84
+
+## Data Analysis
+
+# Show only packets with data
+usb.data_len > 0
+
+# Show packets with specific data pattern (0xEA framing)
+usb.capdata contains ea
+
+# Show larger data transfers (potential image data)
+usb.data_len > 1000
+
+## Direction Filtering
+
+# Show only host to device (commands)
+usb.endpoint_address.direction == 0
+
+# Show only device to host (responses)
+usb.endpoint_address.direction == 1
+
+## Combined Filters
+
+# Bulk OUT transfers to endpoint 0x01
+usb.endpoint_address == 0x01 && usb.transfer_type == 0x03
+
+# Bulk IN transfers from endpoint 0x82 with data
+usb.endpoint_address == 0x82 && usb.data_len > 0
+
+# All transfers for our device with data
+(usb.idVendor == 0x2541 && usb.idProduct == 0xfa03) && usb.data_len > 0
+
+## Troubleshooting
+
+# Show USB errors
+usb.bRequest == 0xff
+
+# Show control transfers (setup packets)
+usb.transfer_type == 0x02
+
+# Show URB type
+usb.urb_type == 0x53  # URB_SUBMIT
+usb.urb_type == 0x43  # URB_COMPLETE
+
+## Export Tips
+
+# After applying filter in Wireshark:
+# File -> Export Specified Packets
+# Choose "Displayed" to export only filtered packets
+
+# Or use tshark:
+# tshark -r input.pcap -Y "your_filter_here" -w filtered.pcap
